@@ -9,8 +9,8 @@ There are three main files:
 
 After running the chosen model, the results can be found within a folder where you are running (or have specified within) the code.
 
+All other dependencies can be found in MFILES, and all data files needed to run this code are found in IFILES.
 
-> All other dependencies can be found in MFILES, and all data files needed to run this code are found in IFILES.
 > Copyright (C) 2018 by Erica L. Ashe
 > This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
