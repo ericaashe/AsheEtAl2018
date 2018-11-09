@@ -11,17 +11,13 @@ After running the chosen model, the results can be found within a folder where y
 
 
 > All other dependencies can be found in MFILES, and all data files needed to run this code are found in IFILES.
-
 > Copyright (C) 2018 by Erica L. Ashe
-
 > This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
-
 > This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
-> A copy of the GNU General Public License comes with this program.  If not, see <http://www.gnu.org/licenses/>.|
+> A copy of the GNU General Public License comes with this program.  If not, see <http://www.gnu.org/licenses/>.
