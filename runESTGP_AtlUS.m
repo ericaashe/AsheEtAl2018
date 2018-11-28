@@ -1,10 +1,9 @@
 %% Empirical Spatio-Temporal Gaussian Process analysis from Ashe et al., 2018
 
-% change the '~/' to the directory where you have downloaded or cloned the
-% main files.
-% to run the optimization, uncomment line 58 and comment out line 62
-% skip the optimization and use the parameters in the published model,
-% comment out line 62 and uncomment line 58.
+% change the '~/' to the directory where you have downloaded or cloned the main files.
+% To run the optimization, uncomment lines 56 - 59 and comment out lines 62 - 63
+% To skip the optimization and use the parameters in the published model,
+% comment out line 56 - 59 and uncomment line 62 - 63
 
 cd ('~/AsheEtAl2018');
 addpath('~/AsheEtAl2018');
@@ -21,8 +20,8 @@ CEpd='~/AsheEtAl2018';
 
 CEIFILES=[CEpd '/IFILES'];
 IFILES=fullfile(CEpd,'IFILES');
-date_field='181105';
-label1='EST_GP';
+date_field='181114';
+label1='_EST_GP';
 label=label1;
 WORKDIR=[date_field label1];
 if ~exist(WORKDIR,'dir')
@@ -36,7 +35,7 @@ defval('firsttime',-12000);
 % import proxy data
 
 idHolo = 3e4;
-datPX=importdata(fullfile(CEIFILES,'US_Atlantic_Coast_for_ESTGP.csv'));
+datPX=importdata(fullfile(CEIFILES,'USAtl_ESTGP.csv'));
 
 %%%%%%
 % prepare data
@@ -54,23 +53,36 @@ DefCovST;
 % optimize covariance
 %%%%%%
 
-%  tic
-%  [thetPX,trainsubset] = OptimizeHoloceneCovariance(datasets{1},modelspec(1),[2.4 2.0 3.4 3.0],[],[],[],[]);
-%  opt_time=toc;
-% thetTGG{1}=thetPX(1:end-1);
+%   tic
+%   [thetPX,trainsubset,logp] = OptimizeHoloceneCovariance(datasets{1},modelspec(1),[2.4 2.0 3.4 3.0],[],[],0,0,0); 
+%   opt_time=toc;
+%   thetTGG{1}=thetPX(1:end-1);
 
-thetPX=[ 72749 32363 1424 4184 7.13 500.8 2502 0.1136 10.1631 0.1065];
-
-thetTGG{1}=thetPX;
+ thetPX=[260224.3 59388.15 0.01134 12 5602.32 4247.65 12 500.13 993.57 3 100.01 0];
+ thetTGG{1}=thetPX(1:end-1);
 
 %%%%%%
-%% do GP regression
+%% do GP regression (condition prior GP with optimized hyperparameters on the data)
 %%%%%%
 
 regress_data_ST;
 
+%% set limits for maps similar to published maps
+
+ylims=[ -40e3 1000;      % Full
+        -15e3 20e3;     % Non-linear regional
+        -15e3 20e3;     % Regional
+        -60e3 10e3;     % Global
+        -2e3 1.5e3;     % Local
+        -40e3 1e3]; 
+
 for iii=1:size(noiseMasks,1)
-    makeplot_slrate_ea(datasets{1},f2s{iii},sd2s{iii},V2s{iii},testlocs,lab{iii},2,2,22,[],0,0,[],[],[],[]);
+    if iii==1
+        plot_dat=1;
+    else
+        plot_dat=0;
+    end
+    makeplot_slrate(datasets{1},f2s{iii},sd2s{iii},V2s{iii},testlocs,lab{iii},2,2,22,meanSL,plot_dat,[],[],[],[],ylims(iii,:));
 end
 
 testX=[];
@@ -80,8 +92,11 @@ testX=[];
     testX(:,3)=1950-testlocs.X(:,3);
     firstyr = [-10000:4000:-2000];
     lastyr = [-6000:4000:2000];
+    
 %%%%%%
 %% Plot Maps
 %%%%%%
 
 runPlotMaps;
+
+save;

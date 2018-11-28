@@ -26,26 +26,48 @@ for curreg=1:length(HoloRegions)
         wlat=wlat+1e-8*curreg;
         wcont=datPX.data(sub,12)*2;
 
-        datid = [datid ; wdatid ; (idHolo+HoloRegions(curreg)*1e3); (idHolo+HoloRegions(curreg)*1e3)];
-        time1 = [time1 ; wtime1 ; 2016 ; 1950-13500-1500];
-        time2 = [time2 ; wtime2 ; 2017 ; 1950-13500+1500];
-        limiting = [limiting ; wlimiting ; 0; 0];
-        intercalated = [intercalated ; wintercalated ; 0; 0];
-        indic = [indic ; windic ; 1; 1];
-        Y = [Y ; wY ; 0 ; -67000];
-        dY = [dY ; wdY ; 10; 5000];
-        minY = [minY ; wminY ; -10; -77000];
-        dY_init = [dY_init ; wdY ; 10; 10000];
-        compactcorr = [compactcorr ; wcompactcorr; 0; 0];
+                
+        datid = [datid ; wdatid ; (idHolo+HoloRegions(curreg)*1e3)];
+        time1 = [time1 ; wtime1 ; 2016 ];
+        time2 = [time2 ; wtime2 ; 2017 ];
+        limiting = [limiting ; wlimiting ; 0];
+        intercalated = [intercalated ; wintercalated ; 0];
+        indic = [indic ; windic ; 1];
+        Y = [Y ; wY ; 0 ];
+        dY = [dY ; wdY ; 10];
+        minY = [minY ; wminY ; -10];
+        dY_init = [dY_init ; wdY ; 10];
+        compactcorr = [compactcorr ; wcompactcorr;  0];
 %        istg = [istg ; 0 * wY ; 0];
-        lat = [lat ; wlat ; mean(wlat); mean(wlat) ];
-        long = [long ; wlong ; mean(wlong) ; mean(wlong) ];
-        overburden=[overburden ; woverburden ; 0; 0];
-        istg=[istg ; wcont ; 0; 0];
+        lat = [lat ; wlat ; mean(wlat) ];
+        long = [long ; wlong ; mean(wlong) ];
+        overburden=[overburden ; woverburden ; 0];
+        istg=[istg ; wcont ; 0];
         sitecoords(curreg,:) = [wlat(1) wlong(1)];
         sitenames{curreg} = ['Holo-' datPX.textdata{sub(1)+1,1}];
         siteid(curreg,1)=wdatid(1);
-        sitelen(curreg,1) = length(sub) + 2;
+        sitelen(curreg,1) = length(sub) + 1;
+        
+%         datid = [datid ; wdatid ; (idHolo+HoloRegions(curreg)*1e3); (idHolo+HoloRegions(curreg)*1e3)];
+%         time1 = [time1 ; wtime1 ; 2016 ; 1950-13000-1000];
+%         time2 = [time2 ; wtime2 ; 2017 ; 1950-13000+1000];
+%         limiting = [limiting ; wlimiting ; 0; 0];
+%         intercalated = [intercalated ; wintercalated ; 0; 0];
+%         indic = [indic ; windic ; 1; 1];
+%         Y = [Y ; wY ; 0 ; -62000];
+%         dY = [dY ; wdY ; 10; 5000];
+%         minY = [minY ; wminY ; -10; -77000];
+%         dY_init = [dY_init ; wdY ; 10; 10000];
+%         compactcorr = [compactcorr ; wcompactcorr; 0; 0];
+% %        istg = [istg ; 0 * wY ; 0];
+%         lat = [lat ; wlat ; mean(wlat); mean(wlat) ];
+%         long = [long ; wlong ; mean(wlong) ; mean(wlong) ];
+%         overburden=[overburden ; woverburden ; 0; 0];
+%         istg=[istg ; wcont ; 0; 0];
+%         sitecoords(curreg,:) = [wlat(1) wlong(1)];
+%         sitenames{curreg} = ['Holo-' datPX.textdata{sub(1)+1,1}];
+%         siteid(curreg,1)=wdatid(1);
+%         sitelen(curreg,1) = length(sub) + 2;
 end
 
 % convert uniform data to approximately normal

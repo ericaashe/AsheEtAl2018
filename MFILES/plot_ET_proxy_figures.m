@@ -2,6 +2,8 @@
 % plots RSL curve, curve with data, and residuals plots
 
 % plot RSL curves
+clf;
+
     plotdat.x=testlocs.X(:,3);
     plotdat.y=f1s;
     plotdat.dy=sds*2;
@@ -10,8 +12,8 @@
     hold on;
     plot(plotdat.x,plotdat.y-plotdat.dy,'k--','linew',1);
     plot(plotdat.x,plotdat.y+plotdat.dy,'k--','linew',1);
-    xlim(xl);
-    ylim([-4500 100]);
+%     xlim(xl);
+%     ylim([-4500 100]);
     xlabel('Age (Common Era)');
     ylabel('RSL (mm)')
     pdfwrite([date_field '_' label1 '_RSL_Predictions']);
@@ -35,7 +37,7 @@
     clf;
     
 %% calculate rates averaged over 200 year periods
-    difftimestep=200;        
+    difftimestep=1000;        
         Mdiff = bsxfun(@eq,testlocs.X(:,3),testlocs.X(:,3)')-bsxfun(@eq,testlocs.X(:,3),testlocs.X(:,3)'+ difftimestep);
         Mdiff = Mdiff .* bsxfun(@eq,testlocs.reg,testlocs.reg');
         sub=find(sum(Mdiff,2)==0);
@@ -62,13 +64,13 @@
             plot(difftimes,df2s+2*dsd2s,':','Color',[.5, .5, .5]);
             plot(difftimes,df2s-2*dsd2s,':','Color',[.5, .5, .5]);
 
-            xlim([-550 2010]);
-            yl=[-2 6];
-            ylim(yl);
+%             xlim([-550 2010]);
+%             yl=[-2 6];
+%             ylim(yl);
             ylabel('Rate (mm/yr = m/ka)','Color','k');
         title([wtestlocs.names{1} ' (' num2str(wtestlocs.sites(1,1)) ')']);
         xlim(xl);
-        pdfwrite([date_field '_200' label1 '_Rates']); 
+        pdfwrite([date_field '_1000' label1 '_Rates']); 
 
 
     fid=fopen(['Rates' labl '.tsv'],'w');
@@ -81,8 +83,6 @@
     end
     fclose(fid);  
     
-testt=[-500:5:2020];
-
 %% calculate residuals
 [Xp,Xi]=sort(testlocp.X(:,3));
 resids=Y(Xi)-fp(Xi)';

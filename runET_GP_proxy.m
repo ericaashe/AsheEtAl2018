@@ -1,7 +1,5 @@
 %% Empirical Temporal Gaussian Process Regression of Continuous Core Data from Ashe et al., 2018
-% for independent runs of the continuous core data
-% change label1 and datPX line to switch from New Jersey to Northern North
-% Carolina data analysis
+% single site for comparison to the spatio-temporal model
 
 cd ('~/AsheEtAl2018');
 addpath('~/AsheEtAl2018');
@@ -19,12 +17,9 @@ CEpd='~/AsheEtAl2018';
 
 CEIFILES=[CEpd '/IFILES'];
 IFILES=fullfile(pd,'IFILES');
-date_field='181106';
+date_field='181114';
 
-%% change this label for different runs
-label1='CC_NJ';
-%label1='CC_NNC';
-
+label1='_NC_proxy';
 label=label1;
 WORKDIR=[date_field label1];
 if ~exist(WORKDIR,'dir')
@@ -37,8 +32,7 @@ idHolo = 3e4;
 % import proxy data, read files
 %%%%%%
 
-datPX=importdata(fullfile(IFILES,'NJ_CC.csv'));
-%datPX=importdata(fullfile(IFILES,'NNC_CC.csv'));
+datPX=importdata(fullfile(IFILES,'NC_proxies.csv'));%
 
 %%%%%%
 % prepare data
@@ -53,27 +47,27 @@ prep_data;
 DefCovOneSite;
 
 %%%%%%
-% optimize covariance
-%%%%%%
-
 tic
-[thetPX,trainsubset,logp] = OptimizeHoloceneCovariance(datasets{1},modelspec(1),[2.4 2.0 3.4 3.0],[],[],0,0,0); %2.4 2.0 3.4 3.0
-opt_time=toc;
+[thetPX,trainsubset,logp] = OptimizeHoloceneCovariance(datasets{1},modelspec(1),[2.4 2.0 3.4 3.0]);
+opt_time=toc
+
+%thetPX= [15623.2 4827.4 19.75 222.52 1.14137 0.03517];
+
 thetTGG={};
 thetTGG{1}=thetPX;
-time_for_opt=toc
 
 %%%%%%
 %% do GP regression
 %%%%%%
 
-regress_data;
+regress_proxy_data;
 
 %%%%%%
 % plot results
 %%%%%%
 
-plot_figures;
+plot_ET_proxy_figures;
 
 %%%%%%
 save;
+

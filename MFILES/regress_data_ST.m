@@ -5,7 +5,7 @@ trainsets=[1];
 trainspecs=[1];
 trainlabels={'default'};
 
-%% now do a regression
+%% do a regression
 
         clear Loc cnt Locid oldest youngest testsitedef;
         for ii=1:length(datasets{1}.sitenames)
@@ -47,7 +47,13 @@ trainsub = find(datasets{1}.limiting==0);
                 testsitedef.firstage = [testsitedef.firstage min(oldest(ii),-17000)];
         end
         
-testt=[-12000:50:2000];
+%% add Merritt Island as a prediction site:
+    testsitedef.sites(end+1,:)=[1000 28.34 279.33];
+    testsitedef.names2={testsitedef.names2{:}, 'Merritt-Island'};
+    testsitedef.names={testsitedef.names{:}, 'Merritt-Island'};
+    testsitedef.firstage = [testsitedef.firstage -17000];
+        
+testt=[-14000:50:2000];
 if isfield(testsitedef,'GIA')
         if size(testsitedef.GIA,2)>1
             % matrix of projections for each site by times, not just a linear rate
@@ -74,11 +80,10 @@ iii=1;
     clear wdataset;
 
     noiseMasks = ones(4,length(thetTGG{trainspecs(jj)}));
-    noiseMasks(1,[9]) = 0;  % full model without white noise
-    noiseMasks(2,[1 3 9]) = 0;% local only
-    noiseMasks(3,[1 6 9]) = 0;% regional only
-    noiseMasks(4,[3 6 9]) = 0;% global only
-    %noiseMasks(5,[1 3 9]) = 0;% low-frequency only
+    noiseMasks(1,[11]) = 0;         % full model without white noise
+    noiseMasks(2,[1 8 11]) = 0;     % All Regional only
+    noiseMasks(3,[3 5 8 11]) = 0;   % Global only
+    noiseMasks(4,[1 3 5 11]) = 0;   % Local
 
     defaultmask=1;
     wdataset=datasets{1};ii=1;
@@ -86,14 +91,13 @@ iii=1;
     disp(labls{iii});
 
     trainsub = find(wdataset.limiting==0);
-    wdataset.dY = sqrt(datasets{ii}.dY.^2); % + (thetTGG{jj}(end)*wdataset.compactcorr).^2);
-    wdataset.Ycv = datasets{ii}.Ycv;% + diag(thetTGG{jj}(end)*wdataset.compactcorr).^2;
+    wdataset.dY = sqrt(datasets{ii}.dY.^2); 
+    wdataset.Ycv = datasets{ii}.Ycv;
     subtimes=find(testt>=-5000+min(wdataset.time1));
     trainsub = find(datasets{1}.limiting==0);
 
- % find average height for each 1000 years -10050 = 12kaBP
     collinear =[];f2s={};sd2s={};V2s={};testlocs=[];
 for iii=1:size(noiseMasks,1)
     [f2s{iii},sd2s{iii},V2s{iii},testlocs,logp(ii,jj),passderivs,invcv]=RegressHoloceneDataSets(datasets{1},testsitedef,modelspec(trainspecs),thetTGG{1},trainsub,noiseMasks(iii,:),testt,refyear,collinear);
 end
-lab=[{'Full'} {'Local'} {'Regional'} {'Global'} {'Regional_WN'}];
+lab=[{'Full'} {'Regional'} {'Global'} {'Local'}];
