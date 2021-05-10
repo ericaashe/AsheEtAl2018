@@ -1,4 +1,4 @@
-# AsheEtAl2018
+# AsheEtAl2019
 This repository contains the MATLAB code base for select models from [Ashe et al. 2019]:
 'Statistical modeling of rates and trends in Holocene relative sea level'
  
@@ -49,6 +49,7 @@ After running the chosen model, the results can be found within a folder where y
 
 ### Co-authors
 * **Niamh Cahill**
+* **Nicole S. Khan**
 * **Carling Hay**
 * **Andrew Kemp**
 * **Simon E. Engelhart**
